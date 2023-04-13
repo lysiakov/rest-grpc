@@ -1,0 +1,4 @@
+webservice:
+  host: localhost
+  rest_port: 8080
+  grpc_port: 8081

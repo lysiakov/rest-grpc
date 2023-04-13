@@ -1,0 +1,67 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package com.lysiakov.shared.grpc;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+
+service MeteoriteLandingsService {
+  rpc getPayload(PayloadRequest) returns (GrpcMeteoriteLandingList) {}
+  rpc acceptPayload(GrpcMeteoriteLandingList) returns (SizeResponse) {}
+}
+
+message PayloadRequest {
+  PayloadSize size = 1;
+}
+
+message SizeResponse {
+  uint32 size = 1;
+}
+
+message Version {
+  string api_version = 1;
+}
+
+message NullableGeoLocation {
+  oneof kind {
+    google.protobuf.NullValue null = 1;
+    GeoLocation data = 2;
+  }
+}
+
+message GeoLocation {
+  GeoLocationType type = 1;
+  repeated double coordinates = 2;
+}
+
+message GrpcMeteoriteLanding {
+  uint32 id = 1;
+  string name = 2;
+  Fall fall = 3;
+  NullableGeoLocation geolocation = 4;
+  double mass = 5;
+  string nametype = 6;
+  string recclass = 7;
+  double reclat = 8;
+  double reclong = 9;
+  google.protobuf.Timestamp year = 10;
+}
+
+message GrpcMeteoriteLandingList {
+  repeated GrpcMeteoriteLanding MeteoriteLandings = 1;
+}
+
+enum PayloadSize {
+  SMALL = 0;
+  MEDIUM = 1;
+  LARGE = 2;
+}
+
+enum GeoLocationType {
+  POINT = 0;
+}
+
+enum Fall {
+    FELL = 0;
+    FOUND = 1;
+}
